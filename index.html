@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090909">
+<title>فضفضة لعلي | Ali</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;background:#090909;color:#f5f1f1;
+ font-family:Tahoma,Arial,sans-serif;line-height:1.9;
+}
+main{max-width:700px;margin:auto;padding:24px 16px 45px}
+header{text-align:center;padding:30px 10px}
+.logo{color:#b51f35;font-size:13px;letter-spacing:3px}
+h1{font-size:35px;margin:8px 0;color:#fff}
+h1 span{color:#c52a40}
+.intro{color:#bcb6b8;font-size:15px}
+.card{
+ background:#121112;border:1px solid #302025;
+ border-radius:18px;padding:20px;margin:18px 0;
+ box-shadow:0 10px 35px #0008;
+}
+h2{font-size:20px;margin:0 0 8px;color:#f0d9dd}
+p{margin:8px 0}
+.muted{font-size:13px;color:#a9a0a3}
+label{display:block;margin:14px 0 6px;font-size:14px}
+textarea,input{
+ width:100%;background:#090909;color:#fff;
+ border:1px solid #443137;border-radius:11px;
+ padding:13px;font:inherit;outline:none;
+}
+textarea{min-height:125px;resize:vertical}
+textarea:focus,input:focus{border-color:#c52a40}
+button{
+ width:100%;border:0;border-radius:11px;padding:13px;
+ margin-top:13px;background:#a91f35;color:white;
+ font-size:16px;font-weight:bold;cursor:pointer;
+}
+button.secondary{background:#21191c;border:1px solid #56303a}
+button:active{transform:scale(.99)}
+.notice{
+ border-right:3px solid #a91f35;padding:10px 12px;
+ background:#191315;color:#c8bec1;font-size:13px;
+ border-radius:5px;
+}
+#chat{display:flex;flex-direction:column;gap:10px;margin-top:18px}
+.bubble{padding:12px 14px;border-radius:12px;white-space:pre-wrap}
+.user{background:#292024;align-self:flex-start;max-width:92%}
+.ali{background:#171717;border:1px solid #38242a;align-self:stretch}
+footer{text-align:center;color:#837a7d;font-size:12px;margin-top:28px}
+</style>
+</head>
+<body>
+<main>
+<header>
+ <div class="logo">مساحة آمنة للكلام</div>
+ <h1>فضفضة <span>لعلي</span></h1>
+ <div class="intro">مو ضروري ترتّب كلامك… احكي اللي بقلبك مثل ما هو.</div>
+ <p class="muted">تجربة من إنشاء علي | Ali</p>
+</header>
+
+<section class="card">
+ <h2>احكي… أنا عم اسمعك</h2>
+ <p class="muted">اكتب اللي مضايقك أو الشي اللي مو قادر تحكيه لحدا.</p>
+ <label for="confession">فضفضتك</label>
+ <textarea id="confession" placeholder="اكتب هون، على راحتك…"></textarea>
+ <button onclick="sendToChat()">كمّل فضفضتك</button>
+ <div id="chat" aria-live="polite"></div>
+ <p class="notice">الرد الذكي لسه بحاجة لربط آمن حتى يقدر يردّ على كلامك فعلًا. رح نفعّله بالخطوة الجاية، وما رح نمثّل عليك بردّ مزيف.</p>
+</section>
+
+<section class="card">
+ <h2>رسالة خاصة لعلي | Ali</h2>
+ <p class="muted">إذا بدك توصل فضفضتك لعلي شخصيًا، فيك تجهّز رسالة هون.</p>
+ <label for="alias">اسم أو لقب (اختياري)</label>
+ <input id="alias" maxlength="60" placeholder="شو بتحب نسمّيك؟">
+ <label for="privateMessage">رسالتك الخاصة</label>
+ <textarea id="privateMessage" maxlength="5000" placeholder="اكتب رسالتك لعلي…"></textarea>
+ <button class="secondary" onclick="preparePrivate()">تجهيز الرسالة</button>
+ <div id="privateStatus" aria-live="polite"></div>
+ <p class="notice">الإرسال الخاص لسه غير مفعّل. ما رح تنرسل الرسالة أو تنحفظ على الموقع قبل ما نربط خدمة آمنة للإرسال.</p>
+</section>
+
+<footer>
+ فضفضة لعلي | Ali<br>
+ كلامك إلك، وخصوصيتك مهمة.
+</footer>
+</main>
+
+<script>
+function sendToChat(){
+ const field=document.getElementById('confession');
+ const message=field.value.trim();
+ const chat=document.getElementById('chat');
+ if(!message){
+  field.focus();
+  alert('اكتب شي بقلبك بالأول.');
+  return;
+ }
+ const bubble=document.createElement('div');
+ bubble.className='bubble user';
+ bubble.textContent=message;
+ chat.appendChild(bubble);
+ const reply=document.createElement('div');
+ reply.className='bubble ali';
+ reply.textContent='وصل كلامك لهون ضمن هالجلسة. الرد الذكي رح نفعّله بعد ربط الخدمة الآمنة بالخطوة الجاية.';
+ chat.appendChild(reply);
+ field.value='';
+ reply.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function preparePrivate(){
+ const alias=document.getElementById('alias').value.trim();
+ const message=document.getElementById('privateMessage').value.trim();
+ const status=document.getElementById('privateStatus');
+ if(!message){
+  document.getElementById('privateMessage').focus();
+  status.textContent='اكتب رسالتك بالأول.';
+  return;
+ }
+ status.textContent='رسالتك جاهزة، لكن لم تُرسل. سنفعّل الإرسال الخاص بعد ربط الخدمة الآمنة.';
+ status.style.color='#e7b8c0';
+}
+</script>
+</body>
+</html>

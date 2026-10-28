@@ -92,25 +92,54 @@ footer{text-align:center;color:#837a7d;font-size:12px;margin-top:28px}
 
 <script>
 function sendToChat(){
- const field=document.getElementById('confession');
- const message=field.value.trim();
- const chat=document.getElementById('chat');
+
+async function sendToChat(){
+ const field = document.getElementById('confession');
+ const message = field.value.trim();
+ const chat = document.getElementById('chat');
+
  if(!message){
-  field.focus();
-  alert('اكتب شي بقلبك بالأول.');
-  return;
+   field.focus();
+   alert('اكتب شي بقلبك بالأول.');
+   return;
  }
- const bubble=document.createElement('div');
- bubble.className='bubble user';
- bubble.textContent=message;
- chat.appendChild(bubble);
- const reply=document.createElement('div');
- reply.className='bubble ali';
- reply.textContent='وصل كلامك لهون ضمن هالجلسة. الرد الذكي رح نفعّله بعد ربط الخدمة الآمنة بالخطوة الجاية.';
+
+ const userBubble = document.createElement('div');
+ userBubble.className = 'bubble user';
+ userBubble.textContent = message;
+ chat.appendChild(userBubble);
+
+ const reply = document.createElement('div');
+ reply.className = 'bubble ali';
+ reply.textContent = 'عطيني لحظة، عم اقرأ كلامك...';
  chat.appendChild(reply);
- field.value='';
- reply.scrollIntoView({behavior:'smooth',block:'nearest'});
+
+ field.value = '';
+
+ try {
+   const response = await fetch(
+     'https://fadhfada-ali-api.alialhussein374.workers.dev',
+     {
+       method: 'POST',
+       headers: { 'Content-Type': 'application/json' },
+       body: JSON.stringify({ message })
+     }
+   );
+
+   const data = await response.json();
+
+   if(!response.ok || !data.reply){
+     throw new Error(data.error || 'تعذّر الحصول على رد.');
+   }
+
+   reply.textContent = 'علي | Ali\n\n' + data.reply;
+ } catch(error) {
+   reply.textContent =
+     'ما قدرت وصّل الرد هالمرة. تأكد من اتصال الإنترنت وحاول مرة ثانية.';
+ }
+ reply.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
+
 function preparePrivate(){
  const alias=document.getElementById('alias').value.trim();
  const message=document.getElementById('privateMessage').value.trim();
